@@ -66,48 +66,85 @@ function Person(firstName, lastName, dob) {
 // How dow allow one object or object type inherit from another? Here we have a Person object again, and then a customer object that will inherit its prototype
 
 // Person Constructor
-function Person(firstName, lastName) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-}
+// function Person(firstName, lastName) {
+//     this.firstName = firstName;
+//     this.lastName = lastName;
+// }
 
 // Greeting 
-Person.prototype.greeting = function() {
-    return `Hello there ${this.firstName} ${this.lastName}`;
-}
+// Person.prototype.greeting = function() {
+//     return `Hello there ${this.firstName} ${this.lastName}`;
+// }
 
-const person1 = new Person('John', 'Doe');
+// const person1 = new Person('John', 'Doe');
 
-console.log(person1.greeting());
+// console.log(person1.greeting());
 
 // Now what we want to do is create a constructor for a customer
 
 // Customer constructor
-function Customer(firstName, lastName, phone, membership) {
-    Person.call(this, firstName, lastName); // .call() is a function that allows us to call another function from somewhere else in the current context. 
-    this.phone = phone;
-    this.membership = membership;
-}
+// function Customer(firstName, lastName, phone, membership) {
+    // Person.call(this, firstName, lastName); // .call() is a function that allows us to call another function from somewhere else in the current context. 
+//     this.phone = phone;
+//     this.membership = membership;
+// }
 
 // Inherit the Person prototype methods
-Customer.prototype = Object.create(Person.prototype);
+// Customer.prototype = Object.create(Person.prototype);
 
 // Make customer.prototype return Customer
-Customer.prototype.constructor = Customer;
+// Customer.prototype.constructor = Customer;
 
 
 // Create customer
- const customer1 = new Customer('Patrick', 'Nyeko', '07940493153', 'Gold');
+//  const customer1 = new Customer('Patrick', 'Nyeko', '07940493153', 'Gold');
 
-console.log(customer1);
+// console.log(customer1);
 
 // We can also over write the Person.prototypes with new prototypes. If we wanted to create a seperate greeting for a customer we can as follows..
 // Customer greeting
-Customer.prototype.greeting = function () {
-    return `Hello there ${this.firstName} ${this.lastName} welcome to our company`;
-} // Any prototype method added to the Person, will now be accessable through the Customer with the the ability to over write it. And thats how we can do inheritance. 
+// Customer.prototype.greeting = function () {
+//     return `Hello there ${this.firstName} ${this.lastName} welcome to our company`;
+// } // Any prototype method added to the Person, will now be accessable through the Customer with the the ability to over write it. And thats how we can do inheritance. 
 
 
-console.log(customer1.greeting()); // This will not work yet because its not inheriting the greeting prototype. So we add some extra lines of code to make this happen (Inherit the Person prototype methods )
+// console.log(customer1.greeting()); // This will not work yet because its not inheriting the greeting prototype. So we add some extra lines of code to make this happen (Inherit the Person prototype methods )
 
+/////////////////////////////////////////////////////////////////////
 
+// Using Object.create
+
+// Another way to create objects using object.create. Allows to create objects inside of a perent object, and then have different properties with different prototype methods/functions. 
+
+const personPrototypes = {
+    greeting: function () {
+        return `Hello there ${this.firstName} ${this.lastName}`;
+    },
+
+    getsMarried: function (newLastName) {
+        this.lastName = newLastName;
+    }
+}
+
+//Object.creat will take in our prototypes
+
+const mary = Object.create(personPrototypes);
+mary.firstName = 'Mary';
+mary.lastName = 'Williams';
+mary.age = 30;
+
+mary.getsMarried('Thompson');
+
+console.log(mary.greeting()) // Its an easier way to create an object without using consturctors and various inheritance. 
+
+const patrick = Object.create(personPrototypes, { 
+    firstName: { value: 'Patrick' },
+    lastName: { value: 'Nyeko' }, 
+    age: {value: 31}
+}); // we added a second prarameter of an object, and each property going to have to be an object aswell with VALUE as a KEY and then the acutal value as the value. 
+
+console.log(patrick);
+
+console.log(patrick.greeting())
+
+// Ultimately this is an alternative way to create objects using the Object.create method. 
