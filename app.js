@@ -2,13 +2,13 @@
 //Dealing with object literals your inheriting from a prototype called object.prototype. When dealing with constructors, like a Person constructor, it will inherit from a Person.prototype
 
 // Person constructor 
-function Person(firstName, lastName, dob) {
+// function Person(firstName, lastName, dob) {
     // this.name = name; // From these couple lines of code we can instantiate (Represent as or by instance) a person object from this.
-    this.birthday = new Date(dob); // Notice the Date object which is a core object of javaScript also has a constructor (uses the new. key word) like how we call new Person, which is an object we created. new Date() is a core object that uses a constructor. 
+    // this.birthday = new Date(dob); // Notice the Date object which is a core object of javaScript also has a constructor (uses the new. key word) like how we call new Person, which is an object we created. new Date() is a core object that uses a constructor. 
 
     // The this. keyword is very important because it refers to the current instance of the this object. In this case it pertains to the Person function, and its function scope. 
-    this.firstName = firstName;
-    this.lastName = lastName;
+    // this.firstName = firstName;
+    // this.lastName = lastName;
 
     // console.log(this) // It should log twice as instatiated two objects.
 
@@ -18,7 +18,7 @@ function Person(firstName, lastName, dob) {
     //     const ageDate = new Date(diff);
     //     return Math.abs(ageDate.getUTCFullYear() - 1970); // This gives us the year and specified date according to the universal time. This may look confusing but this is a common formula to calculate an age from a birthday. Wrapped in Math.abs to make sure the result/value is an absolute number. 
     // }
-}
+// }
 
 // We can add methods to the Person.prototype, they do not have to be inside of the actual object. 
 
@@ -116,35 +116,71 @@ function Person(firstName, lastName, dob) {
 
 // Another way to create objects using object.create. Allows to create objects inside of a perent object, and then have different properties with different prototype methods/functions. 
 
-const personPrototypes = {
-    greeting: function () {
-        return `Hello there ${this.firstName} ${this.lastName}`;
-    },
+// const personPrototypes = {
+//     greeting: function () {
+//         return `Hello there ${this.firstName} ${this.lastName}`;
+//     },
 
-    getsMarried: function (newLastName) {
-        this.lastName = newLastName;
-    }
-}
+//     getsMarried: function (newLastName) {
+//         this.lastName = newLastName;
+//     }
+// }
 
 //Object.creat will take in our prototypes
 
-const mary = Object.create(personPrototypes);
-mary.firstName = 'Mary';
-mary.lastName = 'Williams';
-mary.age = 30;
+// const mary = Object.create(personPrototypes);
+// mary.firstName = 'Mary';
+// mary.lastName = 'Williams';
+// mary.age = 30;
 
-mary.getsMarried('Thompson');
+// mary.getsMarried('Thompson');
 
-console.log(mary.greeting()) // Its an easier way to create an object without using consturctors and various inheritance. 
+// console.log(mary.greeting()) // Its an easier way to create an object without using consturctors and various inheritance. 
 
-const patrick = Object.create(personPrototypes, { 
-    firstName: { value: 'Patrick' },
-    lastName: { value: 'Nyeko' }, 
-    age: {value: 31}
-}); // we added a second prarameter of an object, and each property going to have to be an object aswell with VALUE as a KEY and then the acutal value as the value. 
+// const patrick = Object.create(personPrototypes, { 
+//     firstName: { value: 'Patrick' },
+//     lastName: { value: 'Nyeko' }, 
+//     age: {value: 31}
+// }); // we added a second prarameter of an object, and each property going to have to be an object aswell with VALUE as a KEY and then the acutal value as the value. 
 
-console.log(patrick);
+// console.log(patrick);
 
-console.log(patrick.greeting())
+// console.log(patrick.greeting())
 
 // Ultimately this is an alternative way to create objects using the Object.create method. 
+
+///////////////////////////////////////////////////////////////////////////
+
+// ES6 classes - Under the hood in js engine, this method of creating an object works in the exact same way. Thats why 'classes' are called syntatic sugar or convenience sysntax because it's basically only changing the way we write our methods of creating objects. Not the way that it works under the hood. 
+class Person { // Just with this we can create an object. 
+    constructor(firstName, lastName, dob) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthday = new Date(dob);
+    }
+    greeting() { // Any method we add to the class is going to be added to the proto
+        return `Hello there ${this.firstName} ${this.lastName}`
+    }
+    calculateAge() {
+        const diff = Date.now() - this.birthday.getTime();
+        const ageDate = new Date(diff);
+        return Math.abs(ageDate.getUTCFullYear() - 1970);
+    }
+    getsMarried(newLastName) {
+        this.lastName = newLastName;
+    }
+
+    static addNumbers(x, y) { // stand alone function in class. not a part of the mary object. Thus to run this method you write Person.addNumbers() instead of mary.addNumbers. Just a quick example of static methods.
+        return x + y;
+    }
+}
+
+const mary = new Person('Mary', 'Williams', '11-13-1980'); // Instantiate means when we create an object from the class. 
+
+mary.getsMarried('Fantana');
+
+console.log(mary);
+
+console.log(mary.calculateAge())
+
+console.log(Person.addNumbers(1,2))
