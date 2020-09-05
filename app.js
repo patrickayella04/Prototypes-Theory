@@ -10,7 +10,7 @@
     // this.firstName = firstName;
     // this.lastName = lastName;
 
-    // console.log(this) // It should log twice as instatiated two objects.
+    // console.log(this) // It should log twice as we instatiated * two objects.
 
     // Below we create a method - a method is a function that's inside an object. 
     // this.CalculateAge = function () {
@@ -152,35 +152,84 @@
 ///////////////////////////////////////////////////////////////////////////
 
 // ES6 classes - Under the hood in js engine, this method of creating an object works in the exact same way. Thats why 'classes' are called syntatic sugar or convenience sysntax because it's basically only changing the way we write our methods of creating objects. Not the way that it works under the hood. 
-class Person { // Just with this we can create an object. 
-    constructor(firstName, lastName, dob) {
+// class Person { // Just with this we can create an object. 
+    // constructor(firstName, lastName, dob) {
+    //     this.firstName = firstName;
+    //     this.lastName = lastName;
+    //     this.birthday = new Date(dob);
+    // }
+    // greeting() { // Any method we add to the class is going to be added to the proto
+    //     return `Hello there ${this.firstName} ${this.lastName}`
+    // }
+    // calculateAge() {
+    //     const diff = Date.now() - this.birthday.getTime();
+    //     const ageDate = new Date(diff);
+    //     return Math.abs(ageDate.getUTCFullYear() - 1970);
+    // }
+    // getsMarried(newLastName) {
+    //     this.lastName = newLastName;
+    // }
+
+    // static addNumbers(x, y) { // stand alone function in class. not a part of the mary object. Thus to run this method you write Person.addNumbers() instead of mary.addNumbers. Just a quick example of static methods.
+//         return x + y;
+//     }
+// }
+
+// const mary = new Person('Mary', 'Williams', '11-13-1980'); // Instantiate means when we create an object from the class. 
+
+// mary.getsMarried('Fantana');
+
+// console.log(mary);
+
+// console.log(mary.calculateAge())
+
+// console.log(Person.addNumbers(1, 2))
+
+/////////////////////////////////////////////////////////////////////
+
+// ES6 classes better known as SUB CLASSES
+// So for instance we create a Person class and then create a sub class, called Customer for example, and we can extend the Person class. 
+
+class Person { // We have a Person class with a constructor
+    constructor(firstName, lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.birthday = new Date(dob);
     }
-    greeting() { // Any method we add to the class is going to be added to the proto
-        return `Hello there ${this.firstName} ${this.lastName}`
-    }
-    calculateAge() {
-        const diff = Date.now() - this.birthday.getTime();
-        const ageDate = new Date(diff);
-        return Math.abs(ageDate.getUTCFullYear() - 1970);
-    }
-    getsMarried(newLastName) {
-        this.lastName = newLastName;
+    // we give it a greeting
+    greeting() {
+        return `Hello there ${this.firstName} ${this.lastName}`;
     }
 
-    static addNumbers(x, y) { // stand alone function in class. not a part of the mary object. Thus to run this method you write Person.addNumbers() instead of mary.addNumbers. Just a quick example of static methods.
-        return x + y;
+
+}
+
+// Now we have a Person class, we want to EXTEND this Person class with a customer class. 
+// Customer is the class we'er creating, Person is the class we'er extending. So Customer will be a sub class of Person.  
+class Customer extends Person { 
+    constructor(firstName, lastName, phone, membership) {
+        // when we instantiate a Customer, since it is extending a Person, we want to call the Person constructor. We do this with a function called super(). If you've ever used React.js and you've used ES6 with this js framework, you propably have see this super() function. It just calls the parent class constructor. 
+        super(firstName, lastName) // we have to pass in the first two paremters in parent constructor. 
+        // And anything extra thats not in the Person class and in the Customer class we difine below. 
+        this.phone = phone;
+        this.membership = membership;
+    }
+    // We can also create Customer specific methods and create a static method
+    static getMembershipCost() {
+        return 500;
     }
 }
 
-const mary = new Person('Mary', 'Williams', '11-13-1980'); // Instantiate means when we create an object from the class. 
+// We can instantiate (Represent as or by instance) a new Customer object from this Customer sub class.
 
-mary.getsMarried('Fantana');
+const john = new Customer('john', 'Doe', '555-666-6666', 'Standard');
 
-console.log(mary);
+console.log(john)
 
-console.log(mary.calculateAge())
+// Now we want to call the greeting method on john, even though john is a customer, we should be able to access the Persons methods. 
 
-console.log(Person.addNumbers(1,2))
+console.log(john.greeting()) // There is no greeting in Customer but we can use anything in Person , because we extended Person to Customer. 
+
+// To log a static method we use the actual class name, Customer. 
+console.log(Customer.getMembershipCost());
+
+// We can use Persons methods, with Customer object because we extended person, but not the other way around. We cannot say Person.getMembershipCost() because we extended Person, we did not extend Customer. 
