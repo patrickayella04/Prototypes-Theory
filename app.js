@@ -30,9 +30,9 @@
 // }
 
 // Get full name
-// Person.prototype.getFullName = function () {
-//     return `${this.firstName} ${this.lastName}`
-// }
+Person.prototype.getFullName = function () {
+    return `${this.firstName} ${this.lastName}`
+}
 
 // Gets married 
 // Person.prototype.getsMarried = function (newLastName) {
@@ -62,53 +62,53 @@
 
 //////////////////////////////////////////////////////////////
 
-// Prototypal Inheritance
-// How do we allow one object or object type inherit from another? Here we have a Person object again, and then a customer object that will inherit its prototype
+//Prototypal Inheritance
+//How do we allow one object or object type inherit from another? Here we have a Person object again, and then a customer object that will inherit its prototype
 
-// Person Constructor
-// function Person(firstName, lastName) {
-//     this.firstName = firstName;
-//     this.lastName = lastName;
-// }
+//Person Constructor
+function Person(firstName, lastName) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+}
 
-// Greeting 
-// Person.prototype.greeting = function() {
-//     return `Hello there ${this.firstName} ${this.lastName}`;
-// }
+//Greeting 
+Person.prototype.greeting = function() {
+    return `Hello there ${this.firstName} ${this.lastName}`;
+}
 
-// const person1 = new Person('John', 'Doe');
+const person1 = new Person('John', 'Doe');
 
-// console.log(person1.greeting());
+console.log(person1.greeting());
 
-// Now what we want to do is create a constructor for a customer
+//Now what we want to do is create a constructor for a customer
 
-// Customer constructor
-// function Customer(firstName, lastName, phone, membership) {
-    // Person.call(this, firstName, lastName); // .call() is a function that allows us to call another function from somewhere else in the current context. The first parameter of call() is: this, then the properties that are in the constructor that we are inheriting from: firstName, lastName. Then any other properties in customer constructor we just assign like we we as normal below. (this.phone...etc.)
-//     this.phone = phone;
-//     this.membership = membership;
-// }
+//Customer constructor
+function Customer(firstName, lastName, phone, membership) {
+    Person.call(this, firstName, lastName); // .call() is a function that allows us to call another function from somewhere else in the current context. The first parameter of call() is: this, then the properties that are in the constructor that we are inheriting from: firstName, lastName. Then any other properties in customer constructor we just assign like we we as normal below. (this.phone...etc.)
+    this.phone = phone;
+    this.membership = membership;
+}
 
-// Inherit the Person prototype methods
-// Customer.prototype = Object.create(Person.prototype); // This code allows us to use Methods from Person prototype in th customer constructor. prototype. 
+//Inherit the Person prototype methods
+Customer.prototype = Object.create(Person.prototype); // This code allows us to use Methods from Person prototype in th customer constructor. prototype. 
 
-// Make customer.prototype return Customer in console
-// Customer.prototype.constructor = Customer;
-
-
-// Create customer
-//  const customer1 = new Customer('Patrick', 'Nyeko', '07940493153', 'Gold');
-
-// console.log(customer1);
-
-// We can also over write the Person.prototypes with new prototypes. If we wanted to create a seperate greeting for a customer we can as follows..
-// Customer greeting
-// Customer.prototype.greeting = function () {
-//     return `Hello there ${this.firstName} ${this.lastName} welcome to our company`;
-// } // Any prototype method added to the Person, will now be accessable through the Customer with the the ability to over write it. And thats how we can do inheritance. 
+//Make customer.prototype return Customer in console
+Customer.prototype.constructor = Customer;
 
 
-// console.log(customer1.greeting()); // This will not work yet because its not inheriting the greeting prototype. So we add some extra lines of code to make this happen (Inherit the Person prototype methods )
+//Create customer
+ const customer1 = new Customer('Patrick', 'Nyeko', '07940493153', 'Gold');
+
+console.log(customer1);
+
+//We can also over write the Person.prototypes with new prototypes. If we wanted to create a seperate greeting for a customer we can as follows..
+//Customer greeting
+Customer.prototype.greeting = function () {
+    return `Hello there ${this.firstName} ${this.lastName} welcome to our company`;
+} // Any prototype method added to the Person, will now be accessable through the Customer with the the ability to over write it. And thats how we can do inheritance. 
+
+
+console.log(customer1.greeting());
 
 /////////////////////////////////////////////////////////////////////
 
@@ -190,46 +190,46 @@
 // ES6 classes better known as SUB CLASSES
 // So for instance we create a Person class and then create a sub class, called Customer for example, and we can extend the Person class. 
 
-class Person { // We have a Person class with a constructor
-    constructor(firstName, lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-    // we give it a greeting
-    greeting() {
-        return `Hello there ${this.firstName} ${this.lastName}`;
-    }
+// class Person { // We have a Person class with a constructor
+//     constructor(firstName, lastName) {
+//         this.firstName = firstName;
+//         this.lastName = lastName;
+//     }
+//     // we give it a greeting
+//     greeting() {
+//         return `Hello there ${this.firstName} ${this.lastName}`;
+//     }
 
 
-}
+// }
 
-// Now we have a Person class, we want to EXTEND this Person class with a customer class. 
-// Customer is the class we'er creating, Person is the class we'er extending. So Customer will be a sub class of Person.  
-class Customer extends Person { 
-    constructor(firstName, lastName, phone, membership) {
-        // when we instantiate a Customer, since it is extending a Person, we want to call the Person constructor. We do this with a function called super(). If you've ever used React.js and you've used ES6 with this js framework, you propably have see this super() function. It just calls the parent class constructor. 
-        super(firstName, lastName) // we have to pass in the first two paremters in parent constructor. 
-        // And anything extra thats not in the Person class and in the Customer class we difine below. 
-        this.phone = phone;
-        this.membership = membership;
-    }
-    // We can also create Customer specific methods and create a static method
-    static getMembershipCost() {
-        return 500;
-    }
-}
+// // Now we have a Person class, we want to EXTEND this Person class with a customer class. 
+// // Customer is the class we'er creating, Person is the class we'er extending. So Customer will be a sub class of Person.  
+// class Customer extends Person { 
+//     constructor(firstName, lastName, phone, membership) {
+//         // when we instantiate a Customer, since it is extending a Person, we want to call the Person constructor. We do this with a function called super(). If you've ever used React.js and you've used ES6 with this js framework, you propably have see this super() function. It just calls the parent class constructor. 
+//         super(firstName, lastName) // we have to pass in the first two paremters in parent constructor. 
+//         // And anything extra thats not in the Person class and in the Customer class we difine below. 
+//         this.phone = phone;
+//         this.membership = membership;
+//     }
+//     // We can also create Customer specific methods and create a static method
+//     static getMembershipCost() {
+//         return 500;
+//     }
+// }
 
-// We can instantiate (Represent as or by instance) a new Customer object from this Customer sub class.
+// // We can instantiate (Represent as or by instance) a new Customer object from this Customer sub class.
 
-const john = new Customer('john', 'Doe', '555-666-6666', 'Standard');
+// const john = new Customer('john', 'Doe', '555-666-6666', 'Standard');
 
-console.log(john)
+// console.log(john)
 
-// Now we want to call the greeting method on john, even though john is a customer, we should be able to access the Persons methods. 
+// // Now we want to call the greeting method on john, even though john is a customer, we should be able to access the Persons methods. 
 
-console.log(john.greeting()) // There is no greeting in Customer but we can use anything in Person , because we extended Person to Customer. 
+// console.log(john.greeting()) // There is no greeting in Customer but we can use anything in Person , because we extended Person to Customer. 
 
-// To log a static method we use the actual class name, Customer. 
-console.log(Customer.getMembershipCost());
+// // To log a static method we use the actual class name, Customer. 
+// console.log(Customer.getMembershipCost());
 
-// We can use Persons methods, with Customer object because we extended person, but not the other way around. We cannot say Person.getMembershipCost() because we extended Person, we did not extend Customer. 
+// // We can use Persons methods, with Customer object because we extended person, but not the other way around. We cannot say Person.getMembershipCost() because we extended Person, we did not extend Customer. 
