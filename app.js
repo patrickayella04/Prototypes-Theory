@@ -63,7 +63,7 @@
 //////////////////////////////////////////////////////////////
 
 // Prototypal Inheritance
-// How dow allow one object or object type inherit from another? Here we have a Person object again, and then a customer object that will inherit its prototype
+// How do we allow one object or object type inherit from another? Here we have a Person object again, and then a customer object that will inherit its prototype
 
 // Person Constructor
 // function Person(firstName, lastName) {
@@ -84,15 +84,15 @@
 
 // Customer constructor
 // function Customer(firstName, lastName, phone, membership) {
-    // Person.call(this, firstName, lastName); // .call() is a function that allows us to call another function from somewhere else in the current context. 
+    // Person.call(this, firstName, lastName); // .call() is a function that allows us to call another function from somewhere else in the current context. The first parameter of call() is: this, then the properties that are in the constructor that we are inheriting from: firstName, lastName. Then any other properties in customer constructor we just assign like we we as normal below. (this.phone...etc.)
 //     this.phone = phone;
 //     this.membership = membership;
 // }
 
 // Inherit the Person prototype methods
-// Customer.prototype = Object.create(Person.prototype);
+// Customer.prototype = Object.create(Person.prototype); // This code allows us to use Methods from Person prototype in th customer constructor. prototype. 
 
-// Make customer.prototype return Customer
+// Make customer.prototype return Customer in console
 // Customer.prototype.constructor = Customer;
 
 
